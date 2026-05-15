@@ -58,39 +58,52 @@ export async function GET(request: Request) {
         : q.lte("report_date", to);
     }
 
-    let q1 = applyDateRange(
-      supabase
-        .from("smart_master_db")
-        .select("*")
-        .eq("ga4_property_id", pid),
-    )
-      .order("report_date", { ascending: false })
-      .order("id", { ascending: false })
-      .limit(500);
+    /**
+     * Load every row in the date window (not a single `limit` page). A hard cap of
+     * `report_date` descending meant the first 500 rows were often all one day, so
+     * earlier days never reached the client for VDP Daily / aggregates.
+     */
+    const PAGE_SIZE = 1000;
+    const MAX_ROWS = 200_000;
 
-    const { data: byProperty, error: err1 } = await q1;
+    async function fetchAllRows(
+      eqColumn: "ga4_property_id" | "client_id",
+      eqValue: string | number,
+    ): Promise<{ rows: SmartMasterDbRow[]; error: { message: string } | null }> {
+      const rows: SmartMasterDbRow[] = [];
+      for (let offset = 0; offset < MAX_ROWS; offset += PAGE_SIZE) {
+        const { data, error } = await applyDateRange(
+          supabase.from("smart_master_db").select("*").eq(eqColumn, eqValue),
+        )
+          .order("report_date", { ascending: false })
+          .order("id", { ascending: false })
+          .range(offset, offset + PAGE_SIZE - 1);
+
+        if (error) return { rows, error };
+        if (!data?.length) break;
+        rows.push(...(data as SmartMasterDbRow[]));
+        if (data.length < PAGE_SIZE) break;
+      }
+      return { rows, error: null };
+    }
+
+    let { rows, error: err1 } = await fetchAllRows("ga4_property_id", pid);
 
     if (err1) {
       return NextResponse.json({ error: err1.message }, { status: 500 });
     }
 
-    let rows = (byProperty ?? []) as SmartMasterDbRow[];
-
     if (rows.length === 0 && cid) {
-      let q2 = applyDateRange(
-        supabase.from("smart_master_db").select("*").eq("client_id", cid),
-      )
-        .order("report_date", { ascending: false })
-        .order("id", { ascending: false })
-        .limit(500);
-
-      const { data: byClient, error: err2 } = await q2;
+      const { rows: byClient, error: err2 } = await fetchAllRows(
+        "client_id",
+        cid,
+      );
 
       if (err2) {
         return NextResponse.json({ error: err2.message }, { status: 500 });
       }
 
-      rows = (byClient ?? []) as SmartMasterDbRow[];
+      rows = byClient;
     }
 
     return NextResponse.json({
