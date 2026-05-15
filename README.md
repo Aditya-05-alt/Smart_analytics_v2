@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Wheeler Smart Analytics V2
 
-## Getting Started
+Next.js 16 app with Supabase auth and GA4 advance dashboards.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
+cp .env.example .env.local
+# Edit .env.local with your Supabase URL and anon key
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy to Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This repo is a standard **Next.js App Router** project at the repository root — no monorepo or custom output directory.
 
-## Learn More
+1. Push the repo to GitHub (or GitLab / Bitbucket).
+2. In [Vercel](https://vercel.com/new), **Import** the repository.
+3. Vercel should auto-detect **Next.js**. Leave defaults:
+   - **Root Directory:** `.` (repository root)
+   - **Build Command:** `npm run build`
+   - **Install Command:** `npm install`
+   - **Output:** handled by Next.js (do not set a static `output` folder)
+4. Add **Environment Variables** (Production and Preview):
 
-To learn more about Next.js, take a look at the following resources:
+   | Name | Required | Notes |
+   |------|----------|--------|
+   | `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase project URL |
+   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Supabase anon (public) key |
+   | `SUPABASE_SERVICE_ROLE_KEY` | No | **Do not** add in production; local dev only |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. Deploy. After deploy, sign in with a **Supabase user** (demo login is disabled in production).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Supabase for production
 
-## Deploy on Vercel
+- Enable Email auth (or your provider) in the Supabase dashboard.
+- Add your Vercel URL to **Authentication → URL configuration** (Site URL and Redirect URLs), e.g. `https://your-app.vercel.app` and `https://your-app.vercel.app/**`.
+- Ensure RLS policies allow authenticated reads on `smart_ga4_config` and `smart_master_db` (see `supabase/migrations/`).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Verify build locally
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+npm start
+```
+
+## Project layout
+
+```
+├── middleware.ts          # Supabase session + route protection
+├── next.config.ts
+├── vercel.json            # Vercel framework hint (optional)
+├── public/
+├── src/
+│   ├── app/               # App Router pages and API routes
+│   ├── components/
+│   ├── lib/supabase/      # Supabase clients and dashboard queries
+│   └── types/
+└── supabase/migrations/   # SQL for RLS (apply in Supabase SQL editor)
+```
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Development server |
+| `npm run build` | Production build (same as Vercel) |
+| `npm start` | Run production build locally |
+| `npm run lint` | ESLint |

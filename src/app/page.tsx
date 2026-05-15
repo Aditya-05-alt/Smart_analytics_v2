@@ -3,12 +3,12 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import {
   TEMP_DEV_SESSION_COOKIE,
-  tempDevSessionValid,
+  isTempDevSessionActive,
 } from "@/lib/temp-dev-auth";
 
 export default async function HomePage() {
   const cookieStore = await cookies();
-  if (tempDevSessionValid(cookieStore.get(TEMP_DEV_SESSION_COOKIE)?.value)) {
+  if (isTempDevSessionActive(cookieStore.get(TEMP_DEV_SESSION_COOKIE)?.value)) {
     redirect("/dashboard");
   }
 

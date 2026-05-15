@@ -22,16 +22,18 @@ export default function LoginPage() {
     setError(null);
     setLoading(true);
 
-    const devRes = await fetch("/api/dev-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    if (devRes.ok) {
-      setLoading(false);
-      router.push("/dashboard");
-      router.refresh();
-      return;
+    if (process.env.NODE_ENV === "development") {
+      const devRes = await fetch("/api/dev-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      if (devRes.ok) {
+        setLoading(false);
+        router.push("/dashboard");
+        router.refresh();
+        return;
+      }
     }
 
     if (!supabase) {
@@ -66,24 +68,24 @@ export default function LoginPage() {
         <SupabaseAuthEnvStatus />
       </div>
 
-      {!envReady ? (
-        <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-950">
-          <span className="font-semibold">Temporary dev login:</span>{" "}
-          <span className="font-mono">{TEMP_DEV_EMAIL}</span> / password{" "}
-          <span className="font-mono">{TEMP_DEV_PASSWORD}</span> — remove before
-          production (see{" "}
-          <span className="font-mono">src/lib/temp-dev-auth.ts</span>).
-        </p>
-      ) : (
-        <details className="mt-3 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-700">
-          <summary className="cursor-pointer font-medium text-zinc-800">
-            Optional: temporary dev login (no Supabase user)
-          </summary>
-          <p className="mt-2 font-mono text-[11px] leading-relaxed">
-            {TEMP_DEV_EMAIL} / {TEMP_DEV_PASSWORD}
+      {process.env.NODE_ENV === "development" ? (
+        !envReady ? (
+          <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-950">
+            <span className="font-semibold">Temporary dev login:</span>{" "}
+            <span className="font-mono">{TEMP_DEV_EMAIL}</span> / password{" "}
+            <span className="font-mono">{TEMP_DEV_PASSWORD}</span>
           </p>
-        </details>
-      )}
+        ) : (
+          <details className="mt-3 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-700">
+            <summary className="cursor-pointer font-medium text-zinc-800">
+              Optional: temporary dev login (no Supabase user)
+            </summary>
+            <p className="mt-2 font-mono text-[11px] leading-relaxed">
+              {TEMP_DEV_EMAIL} / {TEMP_DEV_PASSWORD}
+            </p>
+          </details>
+        )
+      ) : null}
 
       <form className="mt-6 space-y-4" onSubmit={(e) => void onSubmit(e)}>
         <div>
