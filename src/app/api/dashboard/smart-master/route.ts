@@ -1,5 +1,6 @@
 import { addDays, format, parseISO } from "date-fns";
 import { NextResponse } from "next/server";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { getDashboardQueryClient } from "@/lib/supabase/dashboard-query";
 import type { SmartMasterDbRow } from "@/types/smart-master-db";
 
@@ -31,6 +32,7 @@ export async function GET(request: Request) {
     if (!supabase) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+    const db: SupabaseClient = supabase;
 
     const from = dateFrom.trim();
     const to = dateTo.trim();
@@ -73,7 +75,7 @@ export async function GET(request: Request) {
       const rows: SmartMasterDbRow[] = [];
       for (let offset = 0; offset < MAX_ROWS; offset += PAGE_SIZE) {
         const { data, error } = await applyDateRange(
-          supabase.from("smart_master_db").select("*").eq(eqColumn, eqValue),
+          db.from("smart_master_db").select("*").eq(eqColumn, eqValue),
         )
           .order("report_date", { ascending: false })
           .order("id", { ascending: false })
