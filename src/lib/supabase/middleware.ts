@@ -2,12 +2,12 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import {
   TEMP_DEV_SESSION_COOKIE,
-  isTempDevSessionActive,
+  tempDevSessionValid,
 } from "@/lib/temp-dev-auth";
 
 export async function updateSession(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const devAuthed = isTempDevSessionActive(
+  const devAuthed = tempDevSessionValid(
     request.cookies.get(TEMP_DEV_SESSION_COOKIE)?.value,
   );
 

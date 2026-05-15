@@ -24,14 +24,3 @@ export function tempDevLoginValid(email: string, password: string): boolean {
 export function tempDevSessionValid(cookieValue: string | undefined): boolean {
   return cookieValue === TEMP_DEV_SESSION_TOKEN;
 }
-
-/** Demo login/cookie auth is local-only; disabled on Vercel production. */
-export function isTempDevAuthEnabled(): boolean {
-  return process.env.NODE_ENV !== "production";
-}
-
-export function isTempDevSessionActive(
-  cookieValue: string | undefined,
-): boolean {
-  return isTempDevAuthEnabled() && tempDevSessionValid(cookieValue);
-}

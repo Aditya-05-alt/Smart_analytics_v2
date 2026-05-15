@@ -2,16 +2,12 @@ import { NextResponse } from "next/server";
 import {
   TEMP_DEV_SESSION_COOKIE,
   TEMP_DEV_SESSION_TOKEN,
-  isTempDevAuthEnabled,
   tempDevLoginValid,
 } from "@/lib/temp-dev-auth";
 
 type Body = { email?: string; password?: string };
 
 export async function POST(request: Request) {
-  if (!isTempDevAuthEnabled()) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  }
   let body: Body;
   try {
     body = (await request.json()) as Body;
@@ -38,9 +34,6 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE() {
-  if (!isTempDevAuthEnabled()) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  }
   const res = NextResponse.json({ ok: true });
   res.cookies.set(TEMP_DEV_SESSION_COOKIE, "", {
     path: "/",

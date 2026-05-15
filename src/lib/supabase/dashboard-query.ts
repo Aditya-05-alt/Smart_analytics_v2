@@ -3,7 +3,6 @@ import { cookies } from "next/headers";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   TEMP_DEV_SESSION_COOKIE,
-  isTempDevAuthEnabled,
   tempDevSessionValid,
 } from "@/lib/temp-dev-auth";
 import { createClient } from "@/lib/supabase/server";
@@ -25,7 +24,7 @@ export async function getDashboardQueryClient(): Promise<
     return authClient as unknown as SupabaseClient;
   }
 
-  if (!isTempDevAuthEnabled()) {
+  if (process.env.NODE_ENV !== "development") {
     return null;
   }
 

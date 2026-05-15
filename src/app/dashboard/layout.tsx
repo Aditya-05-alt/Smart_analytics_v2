@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import {
   TEMP_DEV_EMAIL,
   TEMP_DEV_SESSION_COOKIE,
-  isTempDevSessionActive,
+  tempDevSessionValid,
 } from "@/lib/temp-dev-auth";
 
 export default async function DashboardLayout({
@@ -14,7 +14,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const devAuthed = isTempDevSessionActive(
+  const devAuthed = tempDevSessionValid(
     cookieStore.get(TEMP_DEV_SESSION_COOKIE)?.value,
   );
 
