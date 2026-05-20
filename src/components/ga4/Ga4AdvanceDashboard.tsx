@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -350,9 +350,9 @@ function SortableTh({
   );
 }
 
-/** `smart_master_db.vdp_page` (boolean or PostgREST string); falls back to legacy `vpd_page`. */
+/** `smart_master_db.vpd_page` (boolean or PostgREST string); optional `vdp_page` alias. */
 function readVdpPage(r: SmartMasterDbRow): boolean | null {
-  const raw: unknown = r.vdp_page ?? r.vpd_page;
+  const raw: unknown = r.vpd_page ?? r.vdp_page;
   if (raw === true || raw === "true" || raw === "t") return true;
   if (raw === false || raw === "false" || raw === "f") return false;
   return null;
@@ -2081,7 +2081,6 @@ export function Ga4AdvanceDashboard({
                       {dateRange?.from && dateRange.to ? (
                         <p className="text-sm text-zinc-700">
                           No VDP rows (
-                          <span className="font-medium">vdp_page</span> /
                           <span className="font-medium">vpd_page</span> = true)
                           for this{" "}
                           <span className="font-medium">report_date</span>{" "}
@@ -2183,7 +2182,7 @@ export function Ga4AdvanceDashboard({
                       {dateRange?.from && dateRange.to ? (
                         <p className="text-sm text-zinc-700">
                           No Google VDP rows (
-                          <span className="font-medium">vdp_page</span> = true,
+                          <span className="font-medium">vpd_page</span> = true,
                           Google source/medium) for this{" "}
                           <span className="font-medium">report_date</span> range.
                         </p>

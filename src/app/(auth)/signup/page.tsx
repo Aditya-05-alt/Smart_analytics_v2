@@ -53,9 +53,9 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="w-full max-w-md rounded-xl border border-zinc-200 bg-white p-8 shadow-sm">
-      <h1 className="text-xl font-semibold text-zinc-900">Create account</h1>
-      <p className="mt-1 text-sm text-zinc-600">
+    <div className="w-full max-w-md rounded-xl border border-zinc-200 bg-white p-8 text-black shadow-sm">
+      <h1 className="text-xl font-semibold text-black">Create account</h1>
+      <p className="mt-1 text-sm text-black">
         Wheeler SmartAnalytics V2 — sign up with your work email.
       </p>
       <div className="mt-4">
@@ -65,7 +65,7 @@ export default function SignupPage() {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-zinc-700"
+            className="block text-sm font-medium text-black"
           >
             Email
           </label>
@@ -77,13 +77,13 @@ export default function SignupPage() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none ring-blue-600/30 focus:ring-2"
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-black outline-none ring-blue-600/30 focus:ring-2"
           />
         </div>
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-zinc-700"
+            className="block text-sm font-medium text-black"
           >
             Password
           </label>
@@ -95,13 +95,13 @@ export default function SignupPage() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none ring-blue-600/30 focus:ring-2"
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-black outline-none ring-blue-600/30 focus:ring-2"
           />
         </div>
         <div>
           <label
             htmlFor="confirm"
-            className="block text-sm font-medium text-zinc-700"
+            className="block text-sm font-medium text-black"
           >
             Confirm password
           </label>
@@ -113,7 +113,7 @@ export default function SignupPage() {
             required
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none ring-blue-600/30 focus:ring-2"
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-black outline-none ring-blue-600/30 focus:ring-2"
           />
         </div>
         {error ? (
@@ -134,7 +134,7 @@ export default function SignupPage() {
           {loading ? "Creating account…" : "Sign up"}
         </button>
       </form>
-      <p className="mt-6 text-center text-sm text-zinc-600">
+      <p className="mt-6 text-center text-sm text-black">
         Already have an account?{" "}
         <a href="/login" className="font-medium text-blue-600 hover:underline">
           Sign in

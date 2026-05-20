@@ -56,9 +56,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="w-full max-w-md rounded-xl border border-zinc-200 bg-white p-8 shadow-sm">
-      <h1 className="text-xl font-semibold text-zinc-900">Sign in</h1>
-      <p className="mt-1 text-sm text-zinc-600">
+    <div className="w-full max-w-md rounded-xl border border-zinc-200 bg-white p-8 text-black shadow-sm">
+      <h1 className="text-xl font-semibold text-black">Sign in</h1>
+      <p className="mt-1 text-sm text-black">
         Wheeler SmartAnalytics V2 — access your dashboard.
       </p>
 
@@ -75,8 +75,8 @@ export default function LoginPage() {
           <span className="font-mono">src/lib/temp-dev-auth.ts</span>).
         </p>
       ) : (
-        <details className="mt-3 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-700">
-          <summary className="cursor-pointer font-medium text-zinc-800">
+        <details className="mt-3 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-black">
+          <summary className="cursor-pointer font-medium text-black">
             Optional: temporary dev login (no Supabase user)
           </summary>
           <p className="mt-2 font-mono text-[11px] leading-relaxed">
@@ -89,7 +89,7 @@ export default function LoginPage() {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-zinc-700"
+            className="block text-sm font-medium text-black"
           >
             Email
           </label>
@@ -101,13 +101,13 @@ export default function LoginPage() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none ring-blue-600/30 focus:ring-2"
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-black outline-none ring-blue-600/30 focus:ring-2"
           />
         </div>
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-zinc-700"
+            className="block text-sm font-medium text-black"
           >
             Password
           </label>
@@ -119,7 +119,7 @@ export default function LoginPage() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none ring-blue-600/30 focus:ring-2"
+            className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-black outline-none ring-blue-600/30 focus:ring-2"
           />
         </div>
         {error ? (
@@ -135,7 +135,7 @@ export default function LoginPage() {
           {loading ? "Signing in…" : "Sign in"}
         </button>
       </form>
-      <p className="mt-6 text-center text-sm text-zinc-600">
+      <p className="mt-6 text-center text-sm text-black">
         No account?{" "}
         <a href="/signup" className="font-medium text-blue-600 hover:underline">
           Create one

@@ -14,6 +14,12 @@ function headerTitle(pathname: string) {
   if (pathname.startsWith("/dashboard/ga4-advance")) {
     return "GA4 • Advanced analytics";
   }
+  if (pathname.startsWith("/dashboard/pipeline-health")) {
+    return "Pipeline health";
+  }
+  if (pathname.startsWith("/dashboard/vdp-logics")) {
+    return "VDP Logics";
+  }
   return "Dashboard";
 }
 

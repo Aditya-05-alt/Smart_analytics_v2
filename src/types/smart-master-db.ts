@@ -22,13 +22,13 @@ export type SmartMasterDbRow = {
   make?: string | null;
   model?: string | null;
   location?: string | null;
-  price?: string | null;
-  msrp?: string | null;
+  price?: number | null;
+  msrp?: number | null;
   last_updated?: string | null;
-  /** VDP (vehicle detail page) flag — `smart_master_db.vdp_page`. */
-  vdp_page?: boolean | null;
-  /** Legacy column name if present in older schemas. */
+  /** VDP flag — canonical column on `smart_master_db` is `vpd_page`. */
   vpd_page?: boolean | null;
+  /** Optional alias if a future migration adds `vdp_page`. */
+  vdp_page?: boolean | null;
   bounce_rate?: string | null;
   avg_session_duration?: string | null;
   type_?: string | null;
